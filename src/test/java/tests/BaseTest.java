@@ -10,19 +10,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
+import static com.codeborne.selenide.AssertionMode.SOFT;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static helpers.AttachmentsHelper.*;
 import static helpers.AttachmentsHelper.attachVideo;
 
 public class BaseTest {
-    EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
+    private EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
 
     @BeforeEach
     void setUp() {
         SelenideLogger.addListener("allure", new AllureSelenide());
         Configuration.browserSize = envConfig.getBrowserSize();
         Configuration.browser = envConfig.getBrowser();
-        Configuration.baseUrl = "https://qa.guru";
+        Configuration.assertionMode = SOFT;
+        Configuration.baseUrl = envConfig.getBaseUrl();
 
         if (envConfig.getPlatform().equals("selenoid")) {
             DesiredCapabilities capabilities = new DesiredCapabilities();
