@@ -30,7 +30,6 @@ public class QaGuruTest extends BaseTest {
         step("Переход на страницу " + envConfig.getBaseUrl(), () -> {
             open("/");
         });
-
     }
 
     @Test
