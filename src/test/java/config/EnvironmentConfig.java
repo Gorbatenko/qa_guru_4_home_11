@@ -30,6 +30,7 @@ public interface EnvironmentConfig extends Config {
     String getSelenoidPassword();
 
     @Key("base.url")
+    @DefaultValue("https://qa.guru")
     String getBaseUrl();
 
 }

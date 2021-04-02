@@ -2,6 +2,7 @@ package tests;
 
 import com.codeborne.selenide.*;
 import com.codeborne.selenide.junit5.SoftAssertsExtension;
+import com.github.javafaker.Faker;
 import config.EnvironmentConfig;
 import io.qameta.allure.*;
 import org.aeonbits.owner.ConfigFactory;
@@ -21,6 +22,7 @@ import static io.qameta.allure.SeverityLevel.NORMAL;
 
 @ExtendWith({SoftAssertsExtension.class})
 public class QaGuruTest extends BaseTest {
+    private final Faker faker = new Faker();
     private final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
 
     @BeforeEach
@@ -83,23 +85,99 @@ public class QaGuruTest extends BaseTest {
     @Test
     @Severity(CRITICAL)
     @Owner("GorbatenkoVA")
-    @Story("Проверка контактов")
-    @DisplayName("Кнопка 'Начать обучение' ведёт к записи на курс.")
-    void test3() {
-        $x("//button[contains(text(),'Записаться')]").shouldNot(appear);
-        $x("//header//a[contains(text(),'Начать обучение')]").click();
-        $x("//button[contains(text(),'Записаться')]").should(visible);
+    @Story("Проверка записи на курс")
+    @DisplayName("Кнопка 'Записаться' не пропустит без почты.")
+    void testUserCantSendApplicationForParticipationWithoutEmail() {
+        String firstName = faker.name().firstName();
+        String phoneNumber = faker.phoneNumber().subscriberNumber(10);
+        String expectedErrorMessage = "Не заполнено поле Введите ваш эл. адрес";
+
+        step("Переход к записи на курс", () -> {
+            $x("//header//a[contains(text(),'Начать обучение')]").click();
+        });
+        step("Заполнение имени " + firstName, () -> {
+            $("[placeholder='Введите ваше имя']").val(firstName);
+        });
+        step("Заполнение телефона " + phoneNumber, () -> {
+            $("[placeholder='Введите ваш телефон']").val(phoneNumber);
+        });
+        step("Отправка заявки", () -> {
+            $x("//button[contains(text(),'Записаться')]").click();
+        });
+        step("Проверка подсказки: " + expectedErrorMessage, () -> {
+            $(".error-message").shouldHave(text(expectedErrorMessage));
+        });
+    }
+
+    @Test
+    @Severity(CRITICAL)
+    @Owner("GorbatenkoVA")
+    @Story("Проверка записи на курс")
+    @DisplayName("Кнопка 'Записаться' не пропустит без имени.")
+    void testUserCantSendApplicationForParticipationWithoutName() {
+        String emailAddress = faker.internet().emailAddress();
+        String phoneNumber = faker.phoneNumber().subscriberNumber(10);
+        String expectedErrorMessage = "Не заполнено поле Введите ваше имя";
+
+        step("Переход к записи на курс", () -> {
+            $x("//header//a[contains(text(),'Начать обучение')]").click();
+        });
+        step("Заполнение адреса " + emailAddress, () -> {
+            $("[placeholder='Введите ваш эл. адрес']").val(emailAddress);
+        });
+        step("Заполнение телефона " + phoneNumber, () -> {
+            $("[placeholder='Введите ваш телефон']").val(phoneNumber);
+        });
+        step("Отправка заявки", () -> {
+            $x("//button[contains(text(),'Записаться')]").click();
+        });
+        step("Проверка подсказки: " + expectedErrorMessage, () -> {
+            $(".error-message").shouldHave(text(expectedErrorMessage));
+        });
+    }
+
+    @Test
+    @Severity(CRITICAL)
+    @Owner("GorbatenkoVA")
+    @Story("Проверка записи на курс")
+    @DisplayName("Кнопка 'Записаться' не пропустит без телефона.")
+    void testUserCantSendApplicationForParticipationWithoutPhone() {
+        String emailAddress = faker.internet().emailAddress();
+        String firstName = faker.name().firstName();
+        String expectedErrorMessage = "Не заполнено поле Введите ваш телефон";
+
+        step("Переход к записи на курс", () -> {
+            $x("//header//a[contains(text(),'Начать обучение')]").click();
+        });
+        step("Заполнение адреса " + emailAddress, () -> {
+            $("[placeholder='Введите ваш эл. адрес']").val(emailAddress);
+        });
+        step("Заполнение имени " + firstName, () -> {
+            $("[placeholder='Введите ваше имя']").val(firstName);
+        });
+        step("Отправка заявки", () -> {
+            $x("//button[contains(text(),'Записаться')]").click();
+        });
+        step("Проверка подсказки: " + expectedErrorMessage, () -> {
+            $(".error-message").shouldHave(text(expectedErrorMessage));
+        });
     }
 
     @Test
     @Severity(NORMAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка контактов")
-    @DisplayName("Ссылка в разделе 'Как оплатить' ведёт в телеграмм.")
-    void test4() {
-        $(byText("Как оплатить?")).click();
-        $(byText("https://t.me/cnokoino"))
-                .shouldHave(attribute("href","https://t.me/cnokoino"));
+    @DisplayName("Ссылка в разделе 'Как оплатить' ведёт в телеграм.")
+    void testCheckTelegramLinkOnPaymentQuestions() {
+        String expectedLink = "https://t.me/cnokoino";
+
+        step("Раскрыть список 'Как оплатить?' в часто задаваемых вопросах.", () -> {
+            $(byText("Как оплатить?")).click();
+        });
+        step("Проверить, что ссылка " + expectedLink + " ведёт в телеграм", () -> {
+            $(byText(expectedLink))
+                    .shouldHave(attribute("href", expectedLink));
+        });
     }
 
     @Test
@@ -108,11 +186,18 @@ public class QaGuruTest extends BaseTest {
     @Story("Проверка общей информации")
     @DisplayName("Цена обучения для разных уровней актуальна.")
     void testCheckPrice() {
-        $$("#offers h3")
-                .shouldHave(texts(
-                        "Первый вариант 15 000 ₽",
-                        "Второй вариант 22 500 ₽",
-                        "Третий вариант 28 000 ₽"));
+        step("Переход к прайсам", () -> {
+            $(byText("Сколько стоит курс?")).scrollTo();
+            sleep(500);
+        });
+        step("Проверка цены за обучение", () -> {
+            $$("#offers h3")
+                    .shouldHave(texts(
+                            "Первый вариант 15 000 ₽",
+                            "Второй вариант 22 500 ₽",
+                            "Третий вариант 28 000 ₽"));
+        });
+
     }
 
 }

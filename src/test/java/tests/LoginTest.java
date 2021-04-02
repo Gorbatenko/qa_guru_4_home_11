@@ -17,15 +17,18 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import pages.guru.qa.LoginSteps;
 
 import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.WebDriverRunner.url;
 import static io.qameta.allure.Allure.step;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 import static io.qameta.allure.SeverityLevel.MINOR;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith({SoftAssertsExtension.class})
 public class LoginTest extends BaseTest{
     private final StudentConfig studentConfig = ConfigFactory.create(StudentConfig.class);
     private final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
     private final LoginSteps steps = new LoginSteps();
+    private final Faker faker = new Faker();
 
     @BeforeEach
     void openBaseUrl() {
@@ -45,7 +48,7 @@ public class LoginTest extends BaseTest{
     @Story("Проверка авторизационной формы")
     @DisplayName("Логин с неправильной почтой не пропустит в личный кабинет.")
     void testThatUserWithErrorEmailNotLogin() {
-        String randomEmail = new Faker().internet().emailAddress();
+        String randomEmail = faker.internet().emailAddress();
         String studentPassword = studentConfig.getStudentPassword();
 
         steps.goEntranceToPersonalAccount();
@@ -68,7 +71,7 @@ public class LoginTest extends BaseTest{
     @DisplayName("Логин с неправильным паролем не пропустит в личный кабинет.")
     void testThatUserWithErrorPasswordNotLogin() {
         String studentEmail = studentConfig.getStudentEmail();
-        String randomPassword = new Faker().hacker().abbreviation();
+        String randomPassword = faker.hacker().abbreviation();
 
         steps.goEntranceToPersonalAccount();
         steps.setEmail(studentEmail);
@@ -124,7 +127,7 @@ public class LoginTest extends BaseTest{
     @Severity(MINOR)
     @Story("Проверка редиректа главной страницы")
     @DisplayName("После выхода из личного кабинета главная страница доступна.")
-    void test10() {
+    void testCheckLogoutStudentCanUseMainPage() {
         String studentEmail = studentConfig.getStudentEmail();
         String studentPassword = studentConfig.getStudentPassword();
 
@@ -133,9 +136,17 @@ public class LoginTest extends BaseTest{
         steps.setPassword(studentPassword);
         steps.loginToPersonalAccount();
         steps.checkPersonalArea();
+        step("Открыть профиль", () -> {
+            $(".menu-item .menu-item-icon").click();
+        });
+        step("Выйти из профиля", () -> {
+            $(".menu-item-logout").click();
+        });
         step("Переход на страницу " + envConfig.getBaseUrl(), () -> {
             open(envConfig.getBaseUrl());
         });
-        steps.checkPersonalArea();
+        step("Проверка адреса страницы " + envConfig.getBaseUrl(), () -> {
+            assertEquals(envConfig.getBaseUrl(), url());
+        });
     }
 }
