@@ -48,3 +48,15 @@ test {
         html.enabled = true
     }
 }
+
+task main_page_test(type: Test) {
+    useJUnitPlatform {
+        includeTags 'mainPage'
+    }
+}
+
+task login_page_test(type: Test) {
+    useJUnitPlatform {
+        includeTags 'loginPage'
+    }
+}
