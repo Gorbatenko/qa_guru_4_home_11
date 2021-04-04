@@ -9,10 +9,7 @@ import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.Story;
 import org.aeonbits.owner.ConfigFactory;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import pages.guru.qa.LoginSteps;
 
@@ -43,6 +40,7 @@ public class LoginTest extends BaseTest{
     }
 
     @Test
+    @Tag("loginPage")
     @Owner("GorbatenkoVA")
     @Severity(CRITICAL)
     @Story("Проверка авторизационной формы")
@@ -65,6 +63,7 @@ public class LoginTest extends BaseTest{
     }
 
     @Test
+    @Tag("loginPage")
     @Owner("GorbatenkoVA")
     @Severity(CRITICAL)
     @Story("Проверка авторизационной формы")
@@ -87,6 +86,7 @@ public class LoginTest extends BaseTest{
     }
 
     @Test
+    @Tag("loginPage")
     @Owner("GorbatenkoVA")
     @Severity(CRITICAL)
     @Story("Проверка авторизационной формы")
@@ -103,6 +103,7 @@ public class LoginTest extends BaseTest{
     }
 
     @Test
+    @Tag("loginPage")
     @Owner("GorbatenkoVA")
     @Severity(MINOR)
     @Story("Проверка редиректа главной страницы")
@@ -123,6 +124,7 @@ public class LoginTest extends BaseTest{
     }
 
     @Test
+    @Tag("loginPage")
     @Owner("GorbatenkoVA")
     @Severity(MINOR)
     @Story("Проверка редиректа главной страницы")

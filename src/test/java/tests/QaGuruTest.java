@@ -33,6 +33,7 @@ public class QaGuruTest extends BaseTest {
     }
 
     @Test
+    @Tag("mainPage")
     @Severity(NORMAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка общей информации")
@@ -58,6 +59,7 @@ public class QaGuruTest extends BaseTest {
     }
 
     @Test
+    @Tag("mainPage")
     @Severity(NORMAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка общей информации")
@@ -82,6 +84,7 @@ public class QaGuruTest extends BaseTest {
     }
 
     @Test
+    @Tag("mainPage")
     @Severity(CRITICAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка записи на курс")
@@ -109,6 +112,7 @@ public class QaGuruTest extends BaseTest {
     }
 
     @Test
+    @Tag("mainPage")
     @Severity(CRITICAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка записи на курс")
@@ -136,6 +140,7 @@ public class QaGuruTest extends BaseTest {
     }
 
     @Test
+    @Tag("mainPage")
     @Severity(CRITICAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка записи на курс")
@@ -163,6 +168,7 @@ public class QaGuruTest extends BaseTest {
     }
 
     @Test
+    @Tag("mainPage")
     @Severity(NORMAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка контактов")
@@ -180,6 +186,7 @@ public class QaGuruTest extends BaseTest {
     }
 
     @Test
+    @Tag("mainPage")
     @Severity(CRITICAL)
     @Owner("GorbatenkoVA")
     @Story("Проверка общей информации")
