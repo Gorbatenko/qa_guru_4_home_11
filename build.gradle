@@ -27,10 +27,10 @@ dependencies {
             "io.qameta.allure:allure-java-commons:$allureVersion",
             "io.qameta.allure:allure-selenide:$allureVersion",
             "org.junit.jupiter:junit-jupiter-api:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
             "com.github.javafaker:javafaker:$javafakerVersion",
             'org.aeonbits.owner:owner:1.0.12'
     )
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitVersion"
 }
 
 compileTestJava {
