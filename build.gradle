@@ -43,7 +43,6 @@ tasks.withType(Test) {
 
 test {
     useJUnitPlatform()
-    systemProperties(System.getProperties())
     reports {
         junitXml.enabled = false
         html.enabled = true
