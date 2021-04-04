@@ -36,7 +36,7 @@ public class BaseTest {
         }
 
 //        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
-        setEnvironmentAllure("browser", envConfig.getBrowser());
+//        setEnvironmentAllure("browser", envConfig.getBrowser());
         setEnvironmentAllure("platform", envConfig.getPlatform());
     }
 
