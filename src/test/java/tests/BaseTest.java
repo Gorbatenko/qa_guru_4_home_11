@@ -11,7 +11,6 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 
 import static com.codeborne.selenide.AssertionMode.SOFT;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
-import static com.codeborne.selenide.Selenide.open;
 import static helpers.AttachmentsHelper.*;
 
 public class BaseTest {
@@ -36,7 +35,7 @@ public class BaseTest {
                     envConfig.getSelenoidPassword());
         }
 
-        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
+//        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
         setEnvironmentAllure("browser", envConfig.getBrowser());
         setEnvironmentAllure("platform", envConfig.getPlatform());
     }
