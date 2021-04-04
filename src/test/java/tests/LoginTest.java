@@ -35,7 +35,7 @@ public class LoginTest extends BaseTest{
     }
 
     @AfterEach
-    void afterEach() {
+    void clearCookies() {
         step("Чистка куков", Selenide::clearBrowserCookies);
     }
 
