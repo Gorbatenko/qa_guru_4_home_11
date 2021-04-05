@@ -5,6 +5,7 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import config.EnvironmentConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.aeonbits.owner.ConfigFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -23,10 +24,6 @@ public class BaseTest {
         Configuration.browser = envConfig.getBrowser();
         Configuration.assertionMode = SOFT;
         Configuration.baseUrl = envConfig.getBaseUrl();
-
-        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
-        setEnvironmentAllure("browser", envConfig.getBrowser());
-        setEnvironmentAllure("platform", envConfig.getPlatform());
 
         if (envConfig.getPlatform().equals("selenoid")) {
             DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -48,5 +45,12 @@ public class BaseTest {
             attachVideo();
             closeWebDriver();
         }
+    }
+
+    @AfterEach
+    void allureEnvironment() {
+        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
+        setEnvironmentAllure("browser", envConfig.getBrowser());
+        setEnvironmentAllure("platform", envConfig.getPlatform());
     }
 }
