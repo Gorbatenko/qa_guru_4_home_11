@@ -5,16 +5,20 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import config.EnvironmentConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.aeonbits.owner.ConfigFactory;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 import static com.codeborne.selenide.AssertionMode.SOFT;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static helpers.AttachmentsHelper.*;
 
-public abstract class BaseTest {
-    private final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
+public class BaseTest {
+    private EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
 
     @BeforeEach
     void setUp() {
@@ -34,6 +38,10 @@ public abstract class BaseTest {
                     envConfig.getSelenoidLogin(),
                     envConfig.getSelenoidPassword());
         }
+
+        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
+        setEnvironmentAllure("browser", envConfig.getBrowser());
+        setEnvironmentAllure("platform", envConfig.getPlatform());
     }
 
     @AfterEach
@@ -46,10 +54,13 @@ public abstract class BaseTest {
         }
     }
 
-    @AfterEach
-    void allureEnvironment() {
-        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
-        setEnvironmentAllure("browser", envConfig.getBrowser());
-        setEnvironmentAllure("platform", envConfig.getPlatform());
+    private void setEnvironmentAllure(String key, String value) {
+        String text = key + "=" + value + "\n";
+
+        try (FileOutputStream fos = new FileOutputStream("build/allure-results/environment.properties", true)) {
+            byte[] buffer = text.getBytes();
+            fos.write(buffer, 0, buffer.length);
+        } catch (IOException ignored) {
+        }
     }
 }

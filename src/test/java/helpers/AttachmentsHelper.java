@@ -46,15 +46,4 @@ public class AttachmentsHelper {
     public static String getConsoleLogs() {
         return String.join("\n", Selenide.getWebDriverLogs(BROWSER));
     }
-
-    public static void setEnvironmentAllure(String key, String value) {
-        String text = key + "=" + value + "\n";
-
-        try (FileOutputStream fos = new FileOutputStream("build/allure-results/environment.properties", true)) {
-            byte[] buffer = text.getBytes();
-            fos.write(buffer, 0, buffer.length);
-        } catch (IOException ignored) {
-            ignored.printStackTrace();
-        }
-    }
 }
