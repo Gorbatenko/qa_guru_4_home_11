@@ -5,7 +5,6 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import config.EnvironmentConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.aeonbits.owner.ConfigFactory;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.remote.DesiredCapabilities;
@@ -14,8 +13,8 @@ import static com.codeborne.selenide.AssertionMode.SOFT;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static helpers.AttachmentsHelper.*;
 
-public class BaseTest {
-    private EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
+public abstract class BaseTest {
+    private final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
 
     @BeforeEach
     void setUp() {
