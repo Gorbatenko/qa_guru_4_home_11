@@ -24,6 +24,10 @@ public class BaseTest {
         Configuration.assertionMode = SOFT;
         Configuration.baseUrl = envConfig.getBaseUrl();
 
+        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
+        setEnvironmentAllure("browser", envConfig.getBrowser());
+        setEnvironmentAllure("platform", envConfig.getPlatform());
+
         if (envConfig.getPlatform().equals("selenoid")) {
             DesiredCapabilities capabilities = new DesiredCapabilities();
             capabilities.setCapability("enableVNC", true);
@@ -34,10 +38,6 @@ public class BaseTest {
                     envConfig.getSelenoidLogin(),
                     envConfig.getSelenoidPassword());
         }
-
-        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
-        setEnvironmentAllure("browser", envConfig.getBrowser());
-        setEnvironmentAllure("platform", envConfig.getPlatform());
     }
 
     @AfterEach
