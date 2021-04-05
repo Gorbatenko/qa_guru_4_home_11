@@ -54,6 +54,7 @@ public class AttachmentsHelper {
             byte[] buffer = text.getBytes();
             fos.write(buffer, 0, buffer.length);
         } catch (IOException ignored) {
+            ignored.printStackTrace();
         }
     }
 }
