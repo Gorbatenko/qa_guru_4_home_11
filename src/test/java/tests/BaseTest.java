@@ -44,7 +44,7 @@ public class BaseTest {
     }
 
     @AfterEach
-    void afterEach() {
+    void addAttachments() {
         attachPageSource();
         attachScreenshot("Last screenshot");
         if (envConfig.getPlatform().equals("selenoid")) {
