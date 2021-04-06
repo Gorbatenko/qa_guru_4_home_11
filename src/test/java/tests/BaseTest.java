@@ -17,7 +17,7 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static helpers.AttachmentsHelper.*;
 
 public class BaseTest {
-    private static EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
+    private static final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
 
     @BeforeAll
     static void setUp() {
@@ -48,8 +48,8 @@ public class BaseTest {
         attachPageSource();
         attachScreenshot("Last screenshot");
         if (envConfig.getPlatform().equals("selenoid")) {
-            attachVideo();
             closeWebDriver();
+            attachVideo();
         }
     }
 
