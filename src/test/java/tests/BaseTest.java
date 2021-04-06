@@ -5,9 +5,8 @@ import com.codeborne.selenide.logevents.SelenideLogger;
 import config.EnvironmentConfig;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.aeonbits.owner.ConfigFactory;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.io.FileOutputStream;
@@ -18,15 +17,15 @@ import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static helpers.AttachmentsHelper.*;
 
 public class BaseTest {
-    private EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
+    private static EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         SelenideLogger.addListener("allure", new AllureSelenide());
         Configuration.browserSize = envConfig.getBrowserSize();
         Configuration.browser = envConfig.getBrowser();
-        Configuration.assertionMode = SOFT;
         Configuration.baseUrl = envConfig.getBaseUrl();
+        Configuration.assertionMode = SOFT;
 
         if (envConfig.getPlatform().equals("selenoid")) {
             DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -54,7 +53,7 @@ public class BaseTest {
         }
     }
 
-    private void setEnvironmentAllure(String key, String value) {
+    private static void setEnvironmentAllure(String key, String value) {
         String text = key + "=" + value + "\n";
 
         try (FileOutputStream fos = new FileOutputStream("build/allure-results/environment.properties", true)) {
