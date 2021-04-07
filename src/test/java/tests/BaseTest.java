@@ -16,6 +16,7 @@ import java.io.IOException;
 import static com.codeborne.selenide.AssertionMode.SOFT;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static helpers.AttachmentsHelper.*;
+import static helpers.DriverHelper.getSessionId;
 
 public class BaseTest {
     private static final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
@@ -46,11 +47,13 @@ public class BaseTest {
 
     @AfterEach
     void addAttachments() {
+        String sessionId = getSessionId();
+
         attachScreenshot("Last screenshot");
         attachPageSource();
         closeWebDriver();
         if (envConfig.getPlatform().equals("selenoid")) {
-            attachVideo();
+            attachVideo(sessionId);
         }
     }
 
