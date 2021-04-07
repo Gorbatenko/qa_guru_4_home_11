@@ -46,10 +46,10 @@ public class BaseTest {
 
     @AfterEach
     void addAttachments() {
-        attachPageSource();
         attachScreenshot("Last screenshot");
+        attachPageSource();
+        closeWebDriver();
         if (envConfig.getPlatform().equals("selenoid")) {
-            closeWebDriver();
             attachVideo();
         }
     }
