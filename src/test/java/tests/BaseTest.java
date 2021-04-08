@@ -3,6 +3,7 @@ package tests;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import config.EnvironmentConfig;
+import helpers.AttachmentsHelper;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.aeonbits.owner.ConfigFactory;
 import org.junit.jupiter.api.AfterEach;
@@ -15,10 +16,10 @@ import java.io.IOException;
 import static com.codeborne.selenide.AssertionMode.SOFT;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static helpers.AttachmentsHelper.*;
-import static helpers.DriverHelper.getSessionId;
 
 public class BaseTest {
     private static final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
+    static AttachmentsHelper attachments = new AttachmentsHelper();
 
     @BeforeAll
     static void setUp() {
@@ -39,30 +40,20 @@ public class BaseTest {
                     envConfig.getSelenoidPassword());
         }
 
-        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
-        setEnvironmentAllure("browser", envConfig.getBrowser());
-        setEnvironmentAllure("platform", envConfig.getPlatform());
+        attachments.setEnvironmentAllure("task", System.getProperty("TASK", "test"));
+        attachments.setEnvironmentAllure("browser", envConfig.getBrowser());
+        attachments.setEnvironmentAllure("platform", envConfig.getPlatform());
     }
 
     @AfterEach
     void addAttachments() {
-        String sessionId = getSessionId();
-
-        attachScreenshot("Last screenshot");
-        attachPageSource();
+        attachments.attachScreenshot("Last screenshot");
+        attachments.attachPageSource();
         closeWebDriver();
         if (envConfig.getPlatform().equals("selenoid")) {
-            attachVideo(envConfig.getSelenoidVideo(), sessionId);
+            attachments.attachVideo(envConfig.getSelenoidVideo());
         }
     }
 
-    private static void setEnvironmentAllure(String key, String value) {
-        String text = key + "=" + value + "\n";
 
-        try (FileOutputStream fos = new FileOutputStream("build/allure-results/environment.properties", true)) {
-            byte[] buffer = text.getBytes();
-            fos.write(buffer, 0, buffer.length);
-        } catch (IOException ignored) {
-        }
-    }
 }
