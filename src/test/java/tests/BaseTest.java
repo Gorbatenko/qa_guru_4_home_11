@@ -19,7 +19,6 @@ import static helpers.AttachmentsHelper.*;
 
 public class BaseTest {
     private static final EnvironmentConfig envConfig = ConfigFactory.create(EnvironmentConfig.class);
-    static AttachmentsHelper attachments = new AttachmentsHelper();
 
     @BeforeAll
     static void setUp() {
@@ -40,18 +39,18 @@ public class BaseTest {
                     envConfig.getSelenoidPassword());
         }
 
-        attachments.setEnvironmentAllure("task", System.getProperty("TASK", "test"));
-        attachments.setEnvironmentAllure("browser", envConfig.getBrowser());
-        attachments.setEnvironmentAllure("platform", envConfig.getPlatform());
+        setEnvironmentAllure("task", System.getProperty("TASK", "test"));
+        setEnvironmentAllure("browser", envConfig.getBrowser());
+        setEnvironmentAllure("platform", envConfig.getPlatform());
     }
 
     @AfterEach
     void addAttachments() {
-        attachments.attachScreenshot("Last screenshot");
-        attachments.attachPageSource();
+        attachScreenshot("Last screenshot");
+        attachPageSource();
         closeWebDriver();
         if (envConfig.getPlatform().equals("selenoid")) {
-            attachments.attachVideo(envConfig.getSelenoidVideo());
+            attachVideo(envConfig.getSelenoidVideo());
         }
     }
 
