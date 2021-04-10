@@ -7,7 +7,6 @@ import com.github.javafaker.Faker;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -21,7 +20,6 @@ import static com.codeborne.selenide.Condition.attribute;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
-import static helpers.ConfigHelper.getBaseUrl;
 import static io.qameta.allure.Allure.step;
 import static io.qameta.allure.SeverityLevel.CRITICAL;
 import static io.qameta.allure.SeverityLevel.NORMAL;
@@ -29,13 +27,6 @@ import static io.qameta.allure.SeverityLevel.NORMAL;
 @ExtendWith({SoftAssertsExtension.class})
 public class QaGuruTest extends BaseTest {
     private final Faker faker = new Faker();
-
-    @BeforeEach
-    void openBaseUrl() {
-        step("Переход на страницу " + getBaseUrl(), () -> {
-            open(getBaseUrl());
-        });
-    }
 
     @Test
     @Tag("mainPage")

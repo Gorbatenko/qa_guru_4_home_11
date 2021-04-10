@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
+import static helpers.ConfigHelper.getSelenoidVideo;
 import static org.openqa.selenium.logging.LogType.BROWSER;
 
 public class AttachmentsHelper {
@@ -30,9 +31,9 @@ public class AttachmentsHelper {
     }
 
     @Attachment(value = "Video", type = "text/html", fileExtension = ".html")
-    public static String attachVideo(String selenoidVideoUrl) {
+    public static String attachVideo(String sessionId) {
         return "<html><body><video width='100%' height='100%' controls autoplay><source src='"
-                + String.format(selenoidVideoUrl, getSessionId())
+                + String.format(getSelenoidVideo(), sessionId)
                 + "' type='video/mp4'></video></body></html>";
     }
 
@@ -44,13 +45,15 @@ public class AttachmentsHelper {
         return String.join("\n", Selenide.getWebDriverLogs(BROWSER));
     }
 
-    public static void setEnvironmentAllure(String key, String value) {
+    public static String setEnvironmentAllure(String key, String value) {
         String text = key + "=" + value + "\n";
 
         try (FileOutputStream fos = new FileOutputStream("build/allure-results/environment.properties", true)) {
             byte[] buffer = text.getBytes();
             fos.write(buffer, 0, buffer.length);
+            return "add";
         } catch (IOException ignored) {
+            return "error";
         }
     }
 }

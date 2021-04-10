@@ -1,12 +1,13 @@
 package tests;
 
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.junit5.SoftAssertsExtension;
 import com.github.javafaker.Faker;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Severity;
 import io.qameta.allure.Story;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import pages.guru.qa.LoginSteps;
 
@@ -22,18 +23,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LoginTest extends BaseTest{
     private final LoginSteps steps = new LoginSteps();
     private final Faker faker = new Faker();
-
-    @BeforeEach
-    void openBaseUrl() {
-        step("Переход на страницу " + getBaseUrl(), () -> {
-            open(getBaseUrl());
-        });
-    }
-
-    @AfterEach
-    void clearCookies() {
-        step("Чистка куков", Selenide::clearBrowserCookies);
-    }
 
     @Test
     @Tag("loginPage")
